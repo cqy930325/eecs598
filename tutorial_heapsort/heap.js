@@ -36,15 +36,18 @@ function sink_down(heap,n){
 		var tmp = null;
 		if (ind_Lchild  < heap.length){
 			var var_Lchild = heap[ind_Lchild];
-			if (var_Lchild < heap[n])
+			if (var_Lchild < heap[n]){
 				tmp = ind_Lchild;
+			}
 		}
 		if (ind_Rchild < heap.length){
 			var var_Rchild = heap[ind_Rchild];
-			if (tmp == null && var_Rchild < heap[n])
+			if (tmp == null && var_Rchild < heap[n]){
 				tmp= ind_Rchild;
-			if (tmp != null && var_Rchild < tmp)
-				tmp = ind_Rchild;
+			}
+			if (tmp != null && var_Rchild < heap[tmp]){
+				tmp = ind_Rchild;			
+			}
 		} 
 		if (tmp != null){
 			var value = heap[n];
