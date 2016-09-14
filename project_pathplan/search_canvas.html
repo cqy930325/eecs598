@@ -292,6 +292,7 @@ function astar(){
             drawHighlightedPathGraph(tmp);
             tmp = tmp.parent;
         }
+        search_iterate = false;
         return "succeeded";
     }
     var neighbors = find_neighbors(current);
