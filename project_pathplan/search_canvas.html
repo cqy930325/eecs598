@@ -294,11 +294,7 @@ function dfs(){
     }
     var current = visit_queue.pop();
     if (isReach([current.x,current.y],q_goal)){
-        var tmp = current;
-        while (tmp.parent != null){
-            drawHighlightedPathGraph(tmp);
-            tmp = tmp.parent;
-        }
+        drawHighlightedPathGraph(current);
         search_iterate = false;
         return "succeeded";
     }
@@ -338,11 +334,7 @@ function bfs(){
     var current = visit_queue.shift();
     current.visited = true;
     if (isReach([current.x,current.y],q_goal)){
-        var tmp = current;
-        while (tmp.parent != null){
-            drawHighlightedPathGraph(tmp);
-            tmp = tmp.parent;
-        }
+        drawHighlightedPathGraph(current);
         search_iterate = false;
         return "succeeded";
     }
@@ -382,11 +374,7 @@ function astar(){
     var current = minheap_extract(visit_queue);
     current.queued = true;
     if (isReach([current.x,current.y],q_goal)){
-        var tmp = current;
-        while (tmp.parent != null){
-            drawHighlightedPathGraph(tmp);
-            tmp = tmp.parent;
-        }
+        drawHighlightedPathGraph(current);
         search_iterate = false;
         return "succeeded";
     }
@@ -429,10 +417,7 @@ function gbfs(){
     current.queued = true;
     if (isReach([current.x,current.y],q_goal)){
         var tmp = current;
-        while (tmp.parent != null){
-            drawHighlightedPathGraph(tmp);
-            tmp = tmp.parent;
-        }
+        drawHighlightedPathGraph(tmp);
         search_iterate = false;
         return "succeeded";
     }
