@@ -72,10 +72,10 @@ function init() {
     // initialize time and set timestep 
     t = 0;
     dt = 0.05;  // default
- 
+    isFirst = true;
     // initialize method of numerical integration of dynamics
     //numerical_integrator = "euler";
-    numerical_integrator = "verlet";
+    //numerical_integrator = "verlet";
     //numerical_integrator = "velocity verlet";
     //numerical_integrator = "runge-kutta";
 
@@ -119,6 +119,7 @@ function animate() {
         numerical_integrator = "euler";
     if (keyboard.pressed("2")){
         numerical_integrator = "verlet";
+        isConvert = true;
     }
 
     if (keyboard.pressed("3"))
@@ -174,6 +175,12 @@ function animate() {
     else if (numerical_integrator === "verlet") {
 
     // STENCIL: basic Verlet integration
+        if (isFirst){
+            pendulum.angle_previous = pendulum.angle ;
+            var a = pendulum_acceleration(pendulum,gravity);
+            pendulum.angle = pendulum.angle_previous + pendulum.angle_dot*dt+0.5*a*dt*dt;
+            isFirst = false;
+        }
         var angle_previous = pendulum.angle_previous;
         pendulum.angle_previous = pendulum.angle;
         var angle = pendulum.angle;
