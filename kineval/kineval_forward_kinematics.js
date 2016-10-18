@@ -28,7 +28,7 @@ kineval.robotForwardKinematics = function robotForwardKinematics () {
     kineval.buildFKTransforms();
 }
 
-kineval.buildFKTransforms() = function buildFKTransforms(){
+kineval.buildFKTransforms = function buildFKTransforms(){
     kineval.traverseFKBase();
     if (robot.links_geom_imported) {
         var offset_xform = matrix_multiply(generate_rotation_matrix_Y(-Math.PI/2),generate_rotation_matrix_X(-Math.PI/2));
@@ -38,35 +38,43 @@ kineval.buildFKTransforms() = function buildFKTransforms(){
     }
 }
 
-kineval.traverseFKLink() = function traversalFKLink(link,xform){
+kineval.traverseFKLink = function traverseFKLink(link,xform){
     link.xform = matrix_multiply(xform,generate_identity());
     var i;
     if (typeof link.children !== 'undefined'){
-        for(i = 0;i<link.children.length,i++){
-            kineval.traverseFKLink(robot.joints[link.children[i]],link.xform);
+        for(i = 0;i<link.children.length;i++){
+            kineval.traverseFKJoint(robot.joints[link.children[i]],link.xform);
         }
     }else{
         return;
     }
 }
 
-kineval.traverseFKJoint() = function traverseFKJoint(joint,xform){
+kineval.traverseFKJoint = function traverseFKJoint(joint,xform){
     var trans = generate_translation_matrix(joint.origin.xyz);
     var x_rot = generate_rotation_matrix_X(joint.origin.rpy[0]);
     var y_rot = generate_rotation_matrix_X(joint.origin.rpy[1]);
-    var z_rot = generate_rotation_matrix_X(jointt.origin.rpy[2]);
+    var z_rot = generate_rotation_matrix_X(joint.origin.rpy[2]);
     joint_origin_xform = matrix_multiply(trans,matrix_multiply(z_rot,matrix_multiply(y_rot,x_rot)));
+    new_xform = [];
     if(joint.type === "prismatic"){
         var trans_pris = []
         trans_pris[0] = joint.angle * joint.axis[0];
         trans_pris[1] = joint.angle * joint.axis[1];
         trans_pris[2] = joint.angle * joint.axis[2];
-        joint_xform = generate_translation_matrix(trans_pris);
+        new_xform = generate_translation_matrix(trans_pris);
     }
-    else if ((joint.type === 'revolute')||(joint.type === 'continuous'))
+    else if ((joint.type === 'revolute')||(joint.type === 'continuous')){
+        var q = kineval.quaternionFromAxisAngle(joint.axis,joint.angle);
+        new_xform = kineval.quaternionToRotationMatrix(quaternion_normalize(q));
+    }else{
+        new_xform = generate_identity();
+    }
+    joint.xform = matrix_multiply(matrix_multiply(xform,joint_origin_xform),new_xform);
+    kineval.traverseFKLink(robot.links[joint.child],joint.xform);
 }
 
-kineval.traverseFKBase() = function traverseFKBase(){
+kineval.traverseFKBase = function traverseFKBase(){
     var trans = generate_translation_matrix(robot.origin.xyz);
     var x_rot = generate_rotation_matrix_X(robot.origin.rpy[0]);
     var y_rot = generate_rotation_matrix_X(robot.origin.rpy[1]);

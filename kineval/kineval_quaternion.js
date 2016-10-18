@@ -29,13 +29,13 @@ kineval.quaternionNormalize = function quaternion_normalize(q){
 }
 
 kineval.quaternionToRotationMatrix = function quaternion_to_rotation_matrix(q){
-	R = [
+	mat = [
 		    [q.a*q.a+q.b*q.b-q.c*q.c-q.d*q.d, 2*(q.b*q.c-q.a*q.d),             2*(q.a*q.c+q.b*q.d),0], 
 			[2*(q.b*q.c+q.a*q.d),             q.a*q.a-q.b*q.b+q.c*q.c-q.d*q.d, 2*(q.c*q.d-q.a*q.b),0],
 			[2*(q.b*q.d-q.a*q.c),             2*(q.a*q.b+q.c*q.d),             q.a*q.a-q.b*q.b-q.c*q.c+q.d*q.d,0],
 			[0,0,0,1]
 		];
-	return R;
+	return mat;
 }
 
 kineval.quaternionMultiply = function quaternion_multiply(q1,q2){

@@ -66,7 +66,7 @@ function generate_rotation_matrix_X(theta){
     var sin = Math.sin(theta);
     var ans = [[1,0,0,0],
                 [0,cos,-sin,0],
-                [0 sin,cos,0],
+                [0,sin,cos,0],
                 [0,0,0,1]];
     return ans;
 
@@ -94,6 +94,9 @@ function generate_rotation_matrix_Z(theta){
 
 }
 
+function matrix_copy(mat){
+    return matrix_multiply(mat,generate_identity());
+}
 
 
     // STENCIL: reference matrix code has the following functions:

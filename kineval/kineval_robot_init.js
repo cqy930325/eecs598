@@ -58,6 +58,10 @@ kineval.initRobotJoints = function initRobotJoints() {
     // STENCIL: complete kinematic hierarchy of robot for convenience.
     //   robot description only specifies parent and child links for joints.
     //   additionally specify parent and child joints for each link
+        if (typeof robot.links[robot.joints[x].parent].children === 'undefined') {
+            robot.links[robot.joints[x].parent].children = [];
+        }
+        robot.links[robot.joints[x].parent].children.push(x);
 
     }
 
