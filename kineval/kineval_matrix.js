@@ -87,15 +87,29 @@ function generate_rotation_matrix_Z(theta){
     var cos = Math.cos(theta);
     var sin = Math.sin(theta);
     var ans = [[cos,-sin,0,0],
-                [sin1,cos,0,0],
+                [sin,cos,0,0],
                 [0,0,1,0],
                 [0,0,0,1]];
     return ans;
 
 }
 
-function matrix_copy(mat){
-    return matrix_multiply(mat,generate_identity());
+function vector_normalize(v){
+    var i;
+    var ans = [];
+    var norm = Math.sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
+    for(i = 0;i < 3;i++){
+        ans[i] = v[i]/norm;
+    }
+    return ans;
+
+}
+function vector_cross(u,v){
+    var ans = [];
+    ans[0] = u[1]*v[2] - u[2]*v[1];
+    ans[1] = u[2]*v[0] - u[0]*v[2];  
+    ans[2] = u[0]*v[1] - u[1]*v[0]; 
+    return ans; 
 }
 
 

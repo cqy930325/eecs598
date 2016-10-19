@@ -39,7 +39,7 @@ kineval.buildFKTransforms = function buildFKTransforms(){
 }
 
 kineval.traverseFKLink = function traverseFKLink(link,xform){
-    link.xform = matrix_multiply(xform,generate_identity());
+    link.xform = xform;
     var i;
     if (typeof link.children !== 'undefined'){
         for(i = 0;i<link.children.length;i++){
@@ -51,12 +51,8 @@ kineval.traverseFKLink = function traverseFKLink(link,xform){
 }
 
 kineval.traverseFKJoint = function traverseFKJoint(joint,xform){
-    var trans = generate_translation_matrix(joint.origin.xyz);
-    var x_rot = generate_rotation_matrix_X(joint.origin.rpy[0]);
-    var y_rot = generate_rotation_matrix_X(joint.origin.rpy[1]);
-    var z_rot = generate_rotation_matrix_X(joint.origin.rpy[2]);
-    joint_origin_xform = matrix_multiply(trans,matrix_multiply(z_rot,matrix_multiply(y_rot,x_rot)));
-    new_xform = [];
+    var joint_origin_xform = kineval.generate_transform_matrix(joint.origin.xyz,joint.origin.rpy);
+    var new_xform = generate_identity();
     if(joint.type === "prismatic"){
         var trans_pris = []
         trans_pris[0] = joint.angle * joint.axis[0];
@@ -64,27 +60,28 @@ kineval.traverseFKJoint = function traverseFKJoint(joint,xform){
         trans_pris[2] = joint.angle * joint.axis[2];
         new_xform = generate_translation_matrix(trans_pris);
     }
-    else if ((joint.type === 'revolute')||(joint.type === 'continuous')){
+    else if((joint.type === 'revolute')||(joint.type === 'continuous')||(joint.type === undefined)){
         var q = kineval.quaternionFromAxisAngle(joint.axis,joint.angle);
-        new_xform = kineval.quaternionToRotationMatrix(quaternion_normalize(q));
-    }else{
-        new_xform = generate_identity();
+        new_xform = kineval.quaternionToRotationMatrix(kineval.quaternionNormalize(q));
     }
     joint.xform = matrix_multiply(matrix_multiply(xform,joint_origin_xform),new_xform);
     kineval.traverseFKLink(robot.links[joint.child],joint.xform);
 }
 
 kineval.traverseFKBase = function traverseFKBase(){
-    var trans = generate_translation_matrix(robot.origin.xyz);
-    var x_rot = generate_rotation_matrix_X(robot.origin.rpy[0]);
-    var y_rot = generate_rotation_matrix_X(robot.origin.rpy[1]);
-    var z_rot = generate_rotation_matrix_X(robot.origin.rpy[2]);
-    robot.origin.xform = matrix_multiply(trans,matrix_multiply(z_rot,matrix_multiply(y_rot,x_rot)));
+    robot.origin.xform = kineval.generate_transform_matrix(robot.origin.xyz,robot.origin.rpy);
     robot_heading = matrix_multiply(robot.origin.xform,[[0],[0],[1],[1]]);
     robot_lateral = matrix_multiply(robot.origin.xform,[[1],[0],[0],[1]]);
 }
 
+kineval.generate_transform_matrix = function generate_transform(xyz,rpy){
 
+    var trans = generate_translation_matrix(xyz);
+    var x_rot = generate_rotation_matrix_X(rpy[0]);
+    var y_rot = generate_rotation_matrix_Y(rpy[1]);
+    var z_rot = generate_rotation_matrix_Z(rpy[2]);
+    return matrix_multiply(trans,matrix_multiply(z_rot,matrix_multiply(y_rot,x_rot)));
+}
 
     // STENCIL: reference code alternates recursive traversal over 
     //   links and joints starting from base, using following functions: 

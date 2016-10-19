@@ -11,9 +11,9 @@
 kineval.quaternionFromAxisAngle = function quaternion_from_axisangle(axis,theta){
 	var q = {};
 	q.a = Math.cos(theta/2);
-	q.b = axix[0] * Math.sin(theta/2);
-	q.c = axix[1] * Math.sin(theta/2);
-	q.d = axix[2] * Math.sin(theta/2);
+	q.b = axis[0] * Math.sin(theta/2);
+	q.c = axis[1] * Math.sin(theta/2);
+	q.d = axis[2] * Math.sin(theta/2);
 	return q;
 }
 
