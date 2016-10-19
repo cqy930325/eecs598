@@ -52,19 +52,7 @@ kineval.traverseFKLink = function traverseFKLink(link,xform){
 
 kineval.traverseFKJoint = function traverseFKJoint(joint,xform){
     var joint_origin_xform = kineval.generate_transform_matrix(joint.origin.xyz,joint.origin.rpy);
-    var new_xform = generate_identity();
-    if(joint.type === "prismatic"){
-        var trans_pris = []
-        trans_pris[0] = joint.angle * joint.axis[0];
-        trans_pris[1] = joint.angle * joint.axis[1];
-        trans_pris[2] = joint.angle * joint.axis[2];
-        new_xform = generate_translation_matrix(trans_pris);
-    }
-    else if((joint.type === 'revolute')||(joint.type === 'continuous')||(joint.type === undefined)){
-        var q = kineval.quaternionFromAxisAngle(joint.axis,joint.angle);
-        new_xform = kineval.quaternionToRotationMatrix(kineval.quaternionNormalize(q));
-    }
-    joint.xform = matrix_multiply(matrix_multiply(xform,joint_origin_xform),new_xform);
+    joint.xform = matrix_multiply(xform,joint_origin_xform);
     kineval.traverseFKLink(robot.links[joint.child],joint.xform);
 }
 
