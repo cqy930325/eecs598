@@ -1,32 +1,32 @@
 4: Chen,Qingyu
 EECS 598-009 F16
-Assignment 1 feature 1 (0/4): PathPlan_Heap: CHECK
+Assignment 1 feature 1 (4/4): PathPlan_Heap: CHECK
   comment: good work
-Assignment 1 feature 2 (0/8): PathPlan_AStar: CHECK
+Assignment 1 feature 2 (8/8): PathPlan_AStar: CHECK
   comment: good work
-Assignment 1 feature 3 (0/2): PathPlan_DFS: CHECK
+Assignment 1 feature 3 (2/2): PathPlan_DFS: CHECK
   comment: good work
-Assignment 1 feature 4 (0/2): PathPlan_BFS: CHECK
+Assignment 1 feature 4 (2/2): PathPlan_BFS: CHECK
   comment: good work
-Assignment 1 feature 5 (0/2): PathPlan_BestFirst: CHECK
+Assignment 1 feature 5 (2/2): PathPlan_BestFirst: CHECK
   comment: good work
-Assignment 2 feature 6 (0/4): Pendularm_Euler: CHECK
+Assignment 2 feature 6 (4/4): Pendularm_Euler: CHECK
   comment: good work
-Assignment 2 feature 7 (0/4): Pendularm_VelocityVerlet: CHECK
+Assignment 2 feature 7 (4/4): Pendularm_VelocityVerlet: CHECK
   comment: good work
-Assignment 2 feature 8 (0/4): Pendularm_PID: CHECK
+Assignment 2 feature 8 (4/4): Pendularm_PID: CHECK
   comment: good work
-Assignment 2 feature 9 (0/2): Pendularm_Verlet: CHECK
+Assignment 2 feature 9 (2/2): Pendularm_Verlet: CHECK
   comment: good work
-Assignment 2 feature 10 (0/4): Pendularm_RK4: CHECK
+Assignment 2 feature 10 (4/4): Pendularm_RK4: CHECK
   comment: good work
-Assignment 3 feature 11 (0/2): FK_MatrixRoutines: CHECK
+Assignment 3 feature 11 (2/2): FK_MatrixRoutines: CHECK
   comment: good work
-Assignment 3 feature 12 (0/8): FK_Transforms: CHECK
+Assignment 3 feature 12 (8/8): FK_Transforms: CHECK
   comment: good work
-Assignment 3 feature 13 (0/2): FK_JointRendering: CHECK
+Assignment 3 feature 13 (2/2): FK_JointRendering: CHECK
   comment: good work
-Assignment 3 feature 14 (0/3): FK_BaseOffset: CHECK
+Assignment 3 feature 14 (3/3): FK_BaseOffset: CHECK
   comment: good work
 Assignment 3 feature 15 (0/3): FK_Rosbridge: PENDING
 
