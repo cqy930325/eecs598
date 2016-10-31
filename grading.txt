@@ -1,0 +1,65 @@
+4: Chen,Qingyu
+EECS 598-009 F16
+Assignment 1 feature 1 (/4): PathPlan_Heap: CHECK
+  comment: good work
+Assignment 1 feature 2 (/8): PathPlan_AStar: CHECK
+  comment: good work
+Assignment 1 feature 3 (/2): PathPlan_DFS: CHECK
+  comment: good work
+Assignment 1 feature 4 (/2): PathPlan_BFS: CHECK
+  comment: good work
+Assignment 1 feature 5 (/2): PathPlan_BestFirst: CHECK
+  comment: good work
+Assignment 2 feature 6 (/4): Pendularm_Euler: CHECK
+  comment: good work
+Assignment 2 feature 7 (/4): Pendularm_VelocityVerlet: CHECK
+  comment: good work
+Assignment 2 feature 8 (/4): Pendularm_PID: CHECK
+  comment: good work
+Assignment 2 feature 9 (/2): Pendularm_Verlet: CHECK
+  comment: good work
+Assignment 2 feature 10 (/4): Pendularm_RK4: CHECK
+  comment: good work
+Assignment 3 feature 11 (/2): FK_MatrixRoutines: CHECK
+  comment: good work
+Assignment 3 feature 12 (/8): FK_Transforms: CHECK
+  comment: good work
+Assignment 3 feature 13 (/2): FK_JointRendering: CHECK
+  comment: good work
+Assignment 3 feature 14 (/3): FK_BaseOffset: CHECK
+  comment: good work
+Assignment 3 feature 15 (/3): FK_Rosbridge: PENDING
+
+Assignment 4 feature 16 (/6): FSMDance_Quaternion: PENDING
+
+Assignment 4 feature 17 (/2): FSMDance_BaseControl: PENDING
+
+Assignment 4 feature 18 (/2): FSMDance_SetpointControl: PENDING
+
+Assignment 4 feature 19 (/2): FSMDance_FSM: PENDING
+
+Assignment 4 feature 20 (/3): FSMDance_JointLimits: PENDING
+
+Assignment 4 feature 21 (/3): FSMDance_Prismatic: PENDING
+
+Assignment 5 feature 22 (/6): IK_Jacobian: PENDING
+
+Assignment 5 feature 23 (/3): IK_JTranspose: PENDING
+
+Assignment 5 feature 24 (/3): IK_JPseudoinverse: PENDING
+
+Assignment 5 feature 25 (/6): IK_EulerAngles: PENDING
+
+Assignment 6 feature 26 (/4): MotionPlan_Collision: PENDING
+
+Assignment 6 feature 27 (/2): MotionPlan_2DRRTConnect: PENDING
+
+Assignment 6 feature 28 (/6): MotionPlan_CSpaceRRTConnect: PENDING
+
+Assignment 6 feature 29 (/6): MotionPlan_RRTStar: PENDING
+
+Quiz 1: 8/12
+Quiz 2: 23/24
+Quiz 3: PENDING
+Quiz 4: PENDING
+Quiz 5: PENDING
