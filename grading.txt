@@ -58,8 +58,8 @@ Assignment 6 feature 28 (0/6): MotionPlan_CSpaceRRTConnect: PENDING
 
 Assignment 6 feature 29 (0/6): MotionPlan_RRTStar: PENDING
 
-Quiz 1: 2.6666666666666665/4
-Quiz 2: 3.8333333333333335/4
+Quiz 1: 2.67/4
+Quiz 2: 3.83/4
 Quiz 3: PENDING
 Quiz 4: PENDING
 Quiz 5: PENDING
