@@ -6,7 +6,7 @@ ros = new ROSLIB.Ros({
     //url : 'ws://192.168.1.152:9090'
     //url : 'ws://fetch7:9090'
     //url : 'ws://fetch18.lan:9090'
-    url : 'ws://192.168.1.118:9090'
+    url : 'ws://192.168.1.242:9090'
 }); 
 
 ros.on('connection', function() {
