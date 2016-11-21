@@ -37,9 +37,9 @@ function matrix_multiply(m1, m2) {
 
 function matrix_transpose(m1){
     var ans = [];
-    for (i=0;i<m1.length;i++) { // for each row of m1
+    for (i=0;i<m1[0].length;i++) { // for each row of m1
         ans[i] = [];
-        for (j=0;j<m1[0].length;j++) { // for each column of m1
+        for (j=0;j<m1.length;j++) { // for each column of m1
             ans[i][j] = m1[j][i];
         }
     }
@@ -112,7 +112,22 @@ function vector_cross(u,v){
     return ans; 
 }
 
-
+function matrix_pseudoinverse(m){
+    var M = m[0].length;
+    var N = m.length;
+    var mp = matrix_transpose(m);
+    if (N == M){
+        return numeric.inv(m);
+    }
+    else if (N > M){
+        var mm_inv = numeric.inv(matrix_multiply(mp,m));
+        return matrix_multiply(mm_inv,mp);
+    }
+    else{
+        var mm_inv = numeric.inv(matrix_multiply(m,mp));
+        return matrix_multiply(mp,mm_inv);
+    }
+}
     // STENCIL: reference matrix code has the following functions:
     //   matrix_multiply
     //   matrix_transpose
