@@ -60,6 +60,13 @@ function generate_translation_matrix(xyz){
                 [0,0,0,1]];
     return ans;
 }
+function generate_translation_matrix1(x,y,z){
+    var ans = [[1,0,0,x],
+                [0,1,0,y],
+                [0,0,1,z],
+                [0,0,0,1]];
+    return ans;
+}
 
 function generate_rotation_matrix_X(theta){
     var cos = Math.cos(theta);
@@ -127,6 +134,19 @@ function matrix_pseudoinverse(m){
         var mm_inv = numeric.inv(matrix_multiply(m,mp));
         return matrix_multiply(mp,mm_inv);
     }
+}
+function matrixtoangle(R){
+    var sy = Math.sqrt(R[0][0] * R[0][0] +  R[1][0] * R[1][0]);
+    if (sy > 0.000001){
+        var x = Math.atan2(R[2][1],R[2][2]);
+        var y = Math.atan2(R[2][0],sy);
+        var z = Math.atan2(R[1][0],R[0][0]);
+    }else{
+        var x = Math.atan2(R[1][2],R[1][1]);
+        var y = Math.atan2(R[2][0],sy);
+        var z = 0;
+    }
+    return [x,y,z]
 }
     // STENCIL: reference matrix code has the following functions:
     //   matrix_multiply

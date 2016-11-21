@@ -178,10 +178,10 @@ kineval.robotDraw = function drawRobot() {
     // display robot endeffector
     endeffector_mat = [];
     if (kineval.params.ik_orientation_included)
-        endeffector_mat = matrix_2Darray_to_threejs(matrix_multiply(robot.joints[robot.endeffector.frame].xform,generate_translation_matrix(robot.endeffector.position[0],robot.endeffector.position[1],robot.endeffector.position[2])));
+        endeffector_mat = matrix_2Darray_to_threejs(matrix_multiply(robot.joints[robot.endeffector.frame].xform,generate_translation_matrix1(robot.endeffector.position[0],robot.endeffector.position[1],robot.endeffector.position[2])));
     else {
         endeffector_world = matrix_multiply(robot.joints[robot.endeffector.frame].xform,robot.endeffector.position);
-        endeffector_mat = matrix_2Darray_to_threejs(generate_translation_matrix(endeffector_world[0],endeffector_world[1],endeffector_world[2]));
+        endeffector_mat = matrix_2Darray_to_threejs(generate_translation_matrix1(endeffector_world[0],endeffector_world[1],endeffector_world[2]));
     }
     simpleApplyMatrix(endeffector_geom,endeffector_mat);
 
@@ -189,7 +189,7 @@ kineval.robotDraw = function drawRobot() {
     if (kineval.params.ik_orientation_included)
         var target_mat = matrix_2Darray_to_threejs(
             matrix_multiply(
-                generate_translation_matrix(kineval.params.ik_target.position[0][0],kineval.params.ik_target.position[1][0],kineval.params.ik_target.position[2][0]),
+                generate_translation_matrix1(kineval.params.ik_target.position[0][0],kineval.params.ik_target.position[1][0],kineval.params.ik_target.position[2][0]),
                 matrix_multiply(
                     generate_rotation_matrix_X(kineval.params.ik_target.orientation[0]),
                     matrix_multiply(
@@ -197,7 +197,7 @@ kineval.robotDraw = function drawRobot() {
                         generate_rotation_matrix_Z(kineval.params.ik_target.orientation[2])
         ))));
     else 
-        var target_mat = matrix_2Darray_to_threejs(generate_translation_matrix(kineval.params.ik_target.position[0][0],kineval.params.ik_target.position[1][0],kineval.params.ik_target.position[2][0]));
+        var target_mat = matrix_2Darray_to_threejs(generate_translation_matrix1(kineval.params.ik_target.position[0][0],kineval.params.ik_target.position[1][0],kineval.params.ik_target.position[2][0]));
     simpleApplyMatrix(target_geom,target_mat);
     } // hacked for stencil
 
