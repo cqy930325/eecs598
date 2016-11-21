@@ -100,36 +100,25 @@ kineval.iterateIK = function iterate_inverse_kinematics(endeffector_target_world
     }
         //https://www.learnopencv.com/rotation-matrix-to-euler-angles/
     var R = matrix_copy(robot.joints[endeffector_joint].xform);
-    var sy = Math.sqrt(R[0][0] * R[0][0] +  R[1][0] * R[1][0]);
+    var sy = Math.sqrt(R[2][1] * R[2][1] +  R[2][2] * R[2][2]);
     if (sy > 0.000001){
         var x = Math.atan2(R[2][1],R[2][2]);
-        var y = Math.atan2(R[2][0],sy);
+        var y = Math.atan2(-R[2][0],sy);
         var z = Math.atan2(R[1][0],R[0][0]);
     }else{
         var x = Math.atan2(R[1][2],R[1][1]);
-        var y = Math.atan2(R[2][0],sy);
+        var y = Math.atan2(-R[2][0],sy);
         var z = 0;
     }
-    temp_euler = new THREE.Euler(0,0,0,'XYZ');
-    temperot = matrix_multiply(generate_identity(),robot.joints[endeffector_joint].xform);
-    temperot[0][3] = 0;  
-    temperot[1][3] = 0;  
-    temperot[2][3] = 0;  
-    temp_euler.setFromRotationMatrix(matrix_2Darray_to_threejs(temperot,'ZYX'));
-    console.log(x);
-    console.log(temp_euler.x);
-    console.log(y);
-    console.log(temp_euler.y);
-    console.log(z);
-    console.log(temp_euler.z);
+
     if (kineval.params.ik_orientation_included){
         dx = [
             [ endeffector_target_world.position[0][0]-ef_world[0][0]],
             [ endeffector_target_world.position[1][0]-ef_world[1][0]],
             [ endeffector_target_world.position[2][0]-ef_world[2][0]]
-            ,[ endeffector_target_world.orientation[0]-temp_euler.x]
-            ,[ endeffector_target_world.orientation[1]-temp_euler.y]
-            ,[ endeffector_target_world.orientation[2]-temp_euler.z]
+            ,[ endeffector_target_world.orientation[0]-x]
+            ,[ endeffector_target_world.orientation[1]-y]
+            ,[ endeffector_target_world.orientation[2]-z]
         ]; 
     }
     else{
@@ -142,7 +131,12 @@ kineval.iterateIK = function iterate_inverse_kinematics(endeffector_target_world
             ,[0]
         ]; 
     }
-    var dq = matrix_multiply(matrix_pseudoinverse(J),dx);
+    if (kineval.params.ik_pseudoinverse){
+        var dq = matrix_multiply(matrix_pseudoinverse(J),dx);
+    }
+    else{
+        var dq = matrix_multiply(matrix_transpose(J),dx);
+    }
     var ik_scale = kineval.params.ik_steplength;
     for (i=0;i<joints.length;i++) {
         robot.joints[joints[i]].control += ik_scale*dq[i];
