@@ -100,15 +100,18 @@ kineval.iterateIK = function iterate_inverse_kinematics(endeffector_target_world
     }
         //https://www.learnopencv.com/rotation-matrix-to-euler-angles/
     var R = matrix_copy(robot.joints[endeffector_joint].xform);
-    var sy = Math.sqrt(R[2][1] * R[2][1] +  R[2][2] * R[2][2]);
-    if (sy > 0.000001){
-        var x = Math.atan2(R[2][1],R[2][2]);
-        var y = Math.atan2(-R[2][0],sy);
-        var z = Math.atan2(R[1][0],R[0][0]);
+    if (R[0][2] < -1)
+        var y = Math.asin(-1);
+    else if  (R[0][2] > 1)
+        var y = Math.asin(1);
+    else
+        var y = Math.asin(R[0][2]);
+    if ( Math.abs( R[0][2] ) < 0.99999 ){
+        var x = Math.atan2(-R[1][2],R[2][2]);
+        var z = Math.atan2(-R[0][1],R[0][0]);
     }else{
-        var x = Math.atan2(R[1][2],R[1][1]);
-        var y = Math.atan2(-R[2][0],sy);
         var z = 0;
+        var x = Math.atan2(R[2][1],R[1][1]);
     }
 
     if (kineval.params.ik_orientation_included){
