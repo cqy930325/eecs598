@@ -40,9 +40,9 @@ kineval.quaternionToRotationMatrix = function quaternion_to_rotation_matrix(q){
 
 kineval.quaternionMultiply = function quaternion_multiply(q1,q2){
     var q = {};
-    q.a = q1.a*a2.a - q1.b*a2.b - q1.c*a2.c - q1.d*a2.d;
-    q.b = q1.a*a2.b + q1.b*a2.a + q1.c*a2.d - q1.d*a2.c; 
-    q.c = q1.a*a2.c - q1.b*a2.d + q1.c*a2.a + q1.d*a2.b; 
-    q.d = q1.a*a2.d + q1.b*a2.c - q1.c*a2.b + q1.d*a2.a; 
+    q.a = q1.a*q2.a - q1.b*q2.b - q1.c*q2.c - q1.d*q2.d;
+    q.b = q1.a*q2.b + q1.b*q2.a + q1.c*q2.d - q1.d*q2.c; 
+    q.c = q1.a*q2.c - q1.b*q2.d + q1.c*q2.a + q1.d*q2.b; 
+    q.d = q1.a*q2.d + q1.b*q2.c - q1.c*q2.b + q1.d*q2.a; 
     return q;
 }

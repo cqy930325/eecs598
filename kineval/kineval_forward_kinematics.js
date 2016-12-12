@@ -58,7 +58,7 @@ kineval.traverseFKJoint = function traverseFKJoint(joint,xform){
         trans_pris[0] = joint.angle * joint.axis[0];
         trans_pris[1] = joint.angle * joint.axis[1];
         trans_pris[2] = joint.angle * joint.axis[2];
-        new_xform = generate_translation_matrix(trans_pris);
+        new_xform = generate_translation_matrix1(trans_pris);
     }
     else if((joint.type === 'revolute')||(joint.type === 'continuous')||(joint.type === undefined)){
         var q = kineval.quaternionFromAxisAngle(joint.axis,joint.angle);
@@ -75,8 +75,7 @@ kineval.traverseFKBase = function traverseFKBase(){
 }
 
 kineval.generate_transform_matrix = function generate_transform(xyz,rpy){
-
-    var trans = generate_translation_matrix(xyz);
+    var trans = generate_translation_matrix1(xyz);
     var x_rot = generate_rotation_matrix_X(rpy[0]);
     var y_rot = generate_rotation_matrix_Y(rpy[1]);
     var z_rot = generate_rotation_matrix_Z(rpy[2]);

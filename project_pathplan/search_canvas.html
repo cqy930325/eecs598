@@ -70,16 +70,16 @@ function initSearch() {
     //search_alg = "depth-first";  
     //search_alg = "breadth-first";  
     //search_alg = "greedy-best-first";  
-    search_alg = "A-star";  
+    //search_alg = "A-star";  
     //search_alg = "RRT";  
     //search_alg = "RRT-connect";  
-    //search_alg = "RRT-star";  
+    search_alg = "RRT-star";  
 
     // specify default the world for the planner 
     //  (stored as "range" global variable with name "planning_scene")
     //planning_scene = "empty";
-    //planning_scene = "misc";
-    planning_scene = "narrow1";
+    planning_scene = "misc";
+    //planning_scene = "narrow1";
     //planning_scene = "narrow2";
     //planning_scene = "three_sections";
 
@@ -486,6 +486,22 @@ function iterateRRT() {
     //   insertTreeVertex - adds and displays new configuration vertex for a tree
     //   insertTreeEdge - adds and displays new tree edge between configurations
     //   drawHighlightedPath - renders a highlighted path in a tree
+    var q_rand = randomConfig();
+    var ret = extendRRT(q_rand,T_a);
+    var q_nearest = findNearestNeighbor(q_goal,T_a);
+    var d = q_dist(q_nearest.vertex,q_goal);
+    if(d < eps){
+        search_iterate = false;
+        var path = dfspath(T_a,T_a.vertices[0],T_a.vertices[T_a.newest]);
+        drawHighlightedPath(path);
+        return 'succeeded'; 
+    }
+    if(ret === 'trapped'){
+        return 'failed';
+    }
+    else{
+        return 'extended';
+    }
 }
 
 function iterateRRTConnect() {
@@ -506,10 +522,53 @@ function iterateRRTConnect() {
     //   insertTreeVertex - adds and displays new configuration vertex for a tree
     //   insertTreeEdge - adds and displays new tree edge between configurations
     //   drawHighlightedPath - renders a highlighted path in a tree
+    var q_rand = randomConfig();
+    var ret = extendRRT(q_rand,T_a);
+    var q_nearest = findNearestNeighbor(q_goal,T_a);
+    var d = q_dist(q_nearest.vertex,q_goal);
+    if(ret !== 'trapped'){
+        var connectret = connectRRT(T_b,T_a.vertices[T_a.newest].vertex);
+        var tmp = T_a;
+        T_a = T_b;
+        T_b = tmp;
+        if (connectret === 'reached'){
+            search_iterate = false;
+            var patha = dfspath(T_a,T_a.vertices[0],T_a.vertices[T_a.newest]);
+            drawHighlightedPath(patha);
+            var pathb = dfspath(T_b,T_b.vertices[0],T_b.vertices[T_b.newest]);
+            drawHighlightedPath(pathb);
+            return 'succeeded'
+        }else if(connectret ==='trapped'){
+            return 'failed'
+        }else{
+            return 'extended';
+        }
+    }
+    return 'extended';
 }
 
 function iterateRRTStar() {
-
+    var q_rand = randomConfig();
+    var q_nearest = findNearestNeighbor(q_rand,T_a);
+    var ret = extendRRT(q_rand,T_a);
+    if(ret === 'trapped'){
+        return 'failed';
+    }
+    var q_new = T_a.vertices[T_a.newest];
+    var radius = 10*eps;
+    var q_min = chooseParent(T_a.vertices[q_nearest.index],q_new,T_a,radius);
+    rewire(q_min,q_new,T_a,radius);
+    var q_g = findNearestNeighbor(q_goal,T_a);
+    var d = q_dist(q_new.vertex,q_goal);
+    if(d < eps){
+        search_iterate = false;
+        var path = RRTstarpath(T_a.vertices[q_g.index]);
+        drawHighlightedPath(path);
+        return 'succeeded'; 
+    }
+    else{
+        return 'extended';
+    }
 }
 
 //////////////////////////////////////////////////
@@ -706,7 +765,9 @@ function initRRT(q) {
     tree.vertices[0] = {};
     tree.vertices[0].vertex = q;
     tree.vertices[0].edges = [];
-
+    tree.vertices[0].parent = null;
+    tree.vertices[0].cost = 0;
+    tree.vertices[0].index = 0;
     // maintain index of newest vertex added to tree
     tree.newest = 0;
 
@@ -719,6 +780,9 @@ function insertTreeVertex(tree,q) {
     new_vertex = {};
     new_vertex.edges = [];
     new_vertex.vertex = q;
+    new_vertex.parent = null;
+    new_vertex.cost = 0;
+    new_vertex.index = tree.vertices.length;
     tree.vertices.push(new_vertex);
 
     // maintain index of newest vertex added to tree
@@ -842,7 +906,154 @@ function bubble_up(heap,n){
     //   newConfig
     //   findNearestNeighbor
     //   dfsPath
+function extendRRT(q,tree){
+    var q_nearest = findNearestNeighbor(q,tree);
+    var idx_q_nearest = q_nearest.index;
+    var q_near_config = q_nearest.vertex;
+    var newconfig = newConfig(q,q_nearest.vertex,eps);
+    if(!testCollision(newconfig)){
+        var q_new = newconfig;
+        insertTreeVertex(tree,q_new);
+        insertTreeEdge(tree,tree.vertices.length-1,idx_q_nearest);
+        if (q_dist(q_new,q) < eps){
+            //insertTreeVertex(tree,q);
+            //insertTreeEdge(tree,tree.vertices.length-1,tree.vertices.length-2);
+            return "reached";
+        }
+        else{
+            return "advanced"
+        }
+    }
+    return "trapped";
+}
 
+function connectRRT(tree,q){
+    var ret;
+    do{
+        ret = extendRRT(q,tree);
+    }
+    while(ret === 'advanced')
+    return ret;
+}
+function randomConfig(){
+    x = Math.random()*9-2;
+    y = Math.random()*9-2;
+    return [x,y];
+}
+
+function newConfig(q_end,q_start,eps){
+    var sumofsquare = 0;
+    var q = [];
+    var q_unit = [];
+    
+    for(var i = 0;i<q_end.length;i++){
+        q[i] = q_end[i]-q_start[i];
+        sumofsquare += q[i]*q[i];
+    }
+    var mag = Math.sqrt(sumofsquare);
+    for(var i = 0;i<q_end.length;i++){
+        q_unit[i] = q[i] / mag *eps + q_start[i];
+    }
+    return q_unit;
+}
+
+function findNearestNeighbor(q,tree){
+    dist_min = 9999999999999;
+    idx_min = -1;
+    for(var i=0;i<tree.vertices.length;i++){
+        var d = q_dist(q,tree.vertices[i].vertex);
+        if(d <dist_min){
+            dist_min = d;
+            idx_min = i;
+        }
+    }
+    var ret={};
+    ret.index = idx_min;
+    ret.vertex = tree.vertices[idx_min].vertex;
+    return ret;
+}
+
+function q_dist(q1,q2){
+    var dist = 0;
+    for(var i = 0;i<q1.length;i++){
+        dist+= (q1[i] - q2[i]) * (q1[i] - q2[i]);
+    }
+    return Math.sqrt(dist);
+}
+
+function dfspath(tree,q_start ,q_end){
+    if(q_start === q_end){
+        return [q_start];
+    }
+    q_start.visited = true;
+    var path;
+    for(var i = 0;i<q_start.edges.length;i++){
+        if(!q_start.edges[i].visited){
+            path = dfspath(tree,q_start.edges[i],q_end);
+        }
+        if(path){
+            return path.concat(q_start)
+        }
+    }
+    return false;
+}
+function chooseParent(q_nearest,q_new,tree,radius){
+    var q_min = q_nearest;
+    var cost_min = q_dist(q_min.vertex,q_new.vertex)+q_min.cost; 
+    for(var i = 1;i<tree.vertices.length-1;i++){
+        var node = tree.vertices[i];
+        var cost_node = node.cost+q_dist(node.vertex,q_new.vertex);
+        if(!checkIntersect(q_new.vertex,node.vertex) 
+        && q_dist(node.vertex,q_new.vertex) < radius 
+        &&  cost_node < cost_min
+        && node !== q_new){
+            q_min = node;
+            cost_min = cost_node; 
+        }
+    }
+    q_new.cost = q_min.cost + q_dist(q_min.vertex,q_new.vertex);
+    q_new.parent = q_min;
+    return q_min;
+}
+
+function rewire(q_min,q_new,tree,radius){
+    for(var i = 1;i<tree.vertices.length-1;i++){
+        var node = tree.vertices[i];
+        var cost = q_new.cost+q_dist(node.vertex,q_new.vertex);
+        if(!checkIntersect(q_new.vertex,node.vertex) 
+        && node !== q_new.parent
+        && node !== q_new
+        && q_dist(node.vertex,q_new.vertex) < radius 
+        && cost < node.cost){
+            node.parent = q_new;
+            node.cost = cost;
+            tree.vertices[i] = node;
+        }
+    }
+}
+
+function checkIntersect(q1,q2){
+    var q_new = q1;
+    while(q_dist(q_new,q2) > eps){
+        if(testCollision(q_new)){
+            return true;
+        }
+        q_new = newConfig(q2,q_new,eps);
+    }
+    return false;
+}
+
+function RRTstarpath(q){
+    var path = [];
+    var q_t = q;
+    while(q_t !== null){
+        path.push(q_t);
+        q_t = q_t.parent;
+    }
+    PATH_DEBUG = path;
+    console.log(path);
+    return path;
+}
 </script>
 
 

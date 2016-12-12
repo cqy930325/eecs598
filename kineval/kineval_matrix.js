@@ -53,14 +53,14 @@ function generate_identity(){
                 [0, 0, 0, 1]];
     return ans;
 }
-function generate_translation_matrix(xyz){
+function generate_translation_matrix1(xyz){
     var ans = [[1,0,0,xyz[0]],
                 [0,1,0,xyz[1]],
                 [0,0,1,xyz[2]],
                 [0,0,0,1]];
     return ans;
 }
-function generate_translation_matrix1(x,y,z){
+function generate_translation_matrix(x,y,z){
     var ans = [[1,0,0,x],
                 [0,1,0,y],
                 [0,0,1,z],
