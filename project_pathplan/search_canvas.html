@@ -916,8 +916,7 @@ function extendRRT(q,tree){
         insertTreeVertex(tree,q_new);
         insertTreeEdge(tree,tree.vertices.length-1,idx_q_nearest);
         if (q_dist(q_new,q) < eps){
-            //insertTreeVertex(tree,q);
-            //insertTreeEdge(tree,tree.vertices.length-1,tree.vertices.length-2);
+            
             return "reached";
         }
         else{
@@ -933,6 +932,10 @@ function connectRRT(tree,q){
         ret = extendRRT(q,tree);
     }
     while(ret === 'advanced')
+    if(ret === 'reached'){
+        insertTreeVertex(tree,q);
+        insertTreeEdge(tree,tree.vertices.length-1,tree.vertices.length-2);
+    }
     return ret;
 }
 function randomConfig(){
