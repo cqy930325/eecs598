@@ -296,7 +296,6 @@ function tree_add_edge(tree,q1_idx,q2_idx) {
 function normalize_joint_state(tree){
     for (i=0;i<tree.vertices.length;i++) {
         for (j=3;j<tree.vertices[i].length;j++) {
-            // normalize joint state and enforce joint limits for non-base
             if (j > 5) {
                 if (typeof robot.joints[q_index[j]].type !== 'undefined')
                     if ((robot.joints[q_index[j]].type === 'prismatic')||(robot.joints[q_index[j]].type === 'revolute'))
