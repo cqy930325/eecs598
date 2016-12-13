@@ -66,7 +66,7 @@ function robot_collision_forward_kinematics(q){
         return traverse_collision_forward_kinematics_link(robot.links[robot.base],matrix_multiply(xform,offset_xform),q);
     }
     else 
-        return traverse_collision_forward_kinematics_link(robot.links[robot.base],mstack,q);
+        return traverse_collision_forward_kinematics_link(robot.links[robot.base],xform,q);
 }
 
 function traverse_collision_forward_kinematics_link(link,mstack,q) {
