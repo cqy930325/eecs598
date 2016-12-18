@@ -367,8 +367,8 @@ function randomConfig(length){
             q_rand.push(Math.random()*2*Math.PI);
 
     }
-    q_rand[0] = (robot_boundary[1][0]-robot_boundary[0][0])*Math.random()+robot_boundary[0][0];
-    q_rand[2] = (robot_boundary[1][2]-robot_boundary[0][2])*Math.random()+robot_boundary[0][2];
+    q_rand[0] = (robot_boundary[1][0]-robot_boundary[0][0]+8)*Math.random()+(robot_boundary[0][0]-4);
+    q_rand[2] = (robot_boundary[1][2]-robot_boundary[0][2]+8)*Math.random()+(robot_boundary[0][2]-4);
     q_rand[4] = Math.random()*2*Math.PI;
     return q_rand;
 }
@@ -485,10 +485,3 @@ function RRTstarpath(q){
     }
     return path;
 }
-
-
-
-
-
-
-
