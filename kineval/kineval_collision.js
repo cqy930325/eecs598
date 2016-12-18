@@ -127,26 +127,51 @@ function traverse_collision_forward_kinematics_link(link,mstack,q) {
     // return false, when no collision detected for this link and children 
     return false;
 }
+function computeLocalJointTransform(joint,joint_state) {
+
+    var local_joint_xform = [];
+
+    // compute rotation matrix for current position of joint
+    if (typeof joint.type === 'undefined') {
+        // assume joints are continuous by default
+        current_quat = kineval.quaternionNormalize(kineval.quaternionFromAxisAngle([joint.axis[0],joint.axis[1],joint.axis[2]],joint_state));
+        local_joint_xform = kineval.quaternionToRotationMatrix(current_quat);
+    }
+    else if ((joint.type === 'revolute')||(joint.type === 'continuous')) {
+        current_quat = kineval.quaternionNormalize(kineval.quaternionFromAxisAngle([joint.axis[0],joint.axis[1],joint.axis[2]],joint_state));
+        local_joint_xform = kineval.quaternionToRotationMatrix(current_quat);
+    }
+    else if (joint.type === 'prismatic') {
+        local_joint_xform = generate_translation_matrix(
+            joint_state*joint.axis[0],
+            joint_state*joint.axis[1],
+            joint_state*joint.axis[2]
+        );
+    }
+    else local_joint_xform = generate_identity();
+
+    return local_joint_xform;
+}
 function traverse_collision_forward_kinematics_joint(joint,mstack,q) {
 
     var T_local_global = matrix_copy(mstack);
     var xform = kineval.generate_transform_matrix(joint.origin.xyz,joint.origin.rpy);
     var mstack_global = matrix_multiply(mstack,xform)
     var new_xform = generate_identity();
-    if(joint.type === "prismatic"){
-        var trans_pris = []
-        trans_pris[0] = joint.angle * joint.axis[0];
-        trans_pris[1] = joint.angle * joint.axis[1];
-        trans_pris[2] = joint.angle * joint.axis[2];
-        new_xform = generate_translation_matrix1(trans_pris);
+    var ang = q[q_names[joint.name]];
+    if((typeof joint.type === 'undefined')||(joint.type === 'revolute')||(joint.type === 'continuous')){
+        var quat = kineval.quaternionFromAxisAngle(joint.axis,ang);
+        new_xform = kineval.quaternionToRotationMatrix(kineval.quaternionNormalize(quat));
     }
-    else if((joint.type === 'revolute')||(joint.type === 'continuous')||(joint.type === undefined)){
-        var q = kineval.quaternionFromAxisAngle(joint.axis,joint.angle);
-        new_xform = kineval.quaternionToRotationMatrix(kineval.quaternionNormalize(q));
+    else if(joint.type === "prismatic"){
+        var trans_pris = [];
+        trans_pris[0] = ang * joint.axis[0];
+        trans_pris[1] = ang * joint.axis[1];
+        trans_pris[2] = ang * joint.axis[2];
+        new_xform = generate_translation_matrix1(trans_pris);
     }
     var mstack_final = matrix_multiply(mstack_global,new_xform); 
     return traverse_collision_forward_kinematics_link(robot.links[joint.child],mstack_final,q);
 }
-
 
 
