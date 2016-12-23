@@ -1,4 +1,4 @@
-4: Chen,Qingyu
+50: Zu,Ji
 EECS 598-009 F16
 Assignment 1 feature 1 (4.00/4): PathPlan_Heap: CHECK
   comment: good work
@@ -15,7 +15,9 @@ Assignment 2 feature 6 (4.00/4): Pendularm_Euler: CHECK
 Assignment 2 feature 7 (4.00/4): Pendularm_VelocityVerlet: CHECK
   comment: good work
 Assignment 2 feature 8 (4.00/4): Pendularm_PID: CHECK
-  comment: good work
+  error: servo controller does not converge on all tests
+  comment: servo unable to achieve desired states outside -2pi..2pi range
+  regrade: working
 Assignment 2 feature 9 (2.00/2): Pendularm_Verlet: CHECK
   comment: good work
 Assignment 2 feature 10 (4.00/4): Pendularm_RK4: CHECK
@@ -28,8 +30,8 @@ Assignment 3 feature 13 (2.00/2): FK_JointRendering: CHECK
   comment: good work
 Assignment 3 feature 14 (3.00/3): FK_BaseOffset: CHECK
   comment: good work
-Assignment 3 feature 15 (0.00/3): FK_Rosbridge: DUE
-  error: trial not completed
+Assignment 3 feature 15 (3.00/3): FK_Rosbridge: CHECK
+  comment: good work
 Assignment 4 feature 16 (6.00/6): FSMDance_Quaternion: CHECK
   comment: good work
 Assignment 4 feature 17 (2.00/2): FSMDance_BaseControl: CHECK
@@ -37,7 +39,8 @@ Assignment 4 feature 17 (2.00/2): FSMDance_BaseControl: CHECK
 Assignment 4 feature 18 (2.00/2): FSMDance_SetpointControl: CHECK
   comment: good work
 Assignment 4 feature 19 (2.00/2): FSMDance_FSM: CHECK
-  comment: good work
+  error: dance controller does not execute
+  comment: dance controller does not properly transition between FSM states
 Assignment 4 feature 20 (3.00/3): FSMDance_JointLimits: CHECK
   comment: good work
 Assignment 4 feature 21 (3.00/3): FSMDance_Prismatic: CHECK
@@ -46,29 +49,30 @@ Assignment 5 feature 22 (6.00/6): IK_Jacobian: CHECK
   comment: good work
 Assignment 5 feature 23 (3.00/3): IK_JTranspose: CHECK
   comment: good work
-  comment: Fetch IK Random Trial Score: 7
+  comment: Fetch IK Random Trial Score: 19
 Assignment 5 feature 24 (3.00/3): IK_JPseudoinverse: CHECK
   comment: good work
 Assignment 5 feature 25 (6.00/6): IK_EulerAngles: CHECK
   comment: good work
-Assignment 6 feature 26 (0.00/4): MotionPlan_Collision: DUE
-  error: branch not found
-Assignment 6 feature 27 (0.00/2): MotionPlan_2DRRTConnect: DUE
-  error: branch not found
-Assignment 6 feature 28 (0.00/6): MotionPlan_CSpaceRRTConnect: DUE
-  error: branch not found
-Assignment 6 feature 29 (0.00/6): MotionPlan_RRTStar: DUE
-  error: branch not found
+Assignment 6 feature 26 (4.00/4): MotionPlan_Collision: CHECK
+  comment: good work
+Assignment 6 feature 27 (2.00/2): MotionPlan_2DRRTConnect: CHECK
+  comment: good work
+Assignment 6 feature 28 (6.00/6): MotionPlan_CSpaceRRTConnect: CHECK
+  comment: good work
+Assignment 6 feature 29 (6.00/6): MotionPlan_RRTStar: CHECK
+  comment: good work
 Assignment 7 feature 30 (12.00/12): Pitch: CHECK
-  Personal Healthcare Robot
+  Ocean Explore Robotic
 Assignment 7 feature 31 (6.00/6): Pitch_Advanced: CHECK
   comment: good work
 Assignment 8 feature 32 (0.00/4): Advanced: PENDING
 
-Quiz 1: 2.67 of 4
-Quiz 2: 3.83 of 4
-Quiz 3: 3.33 of 4
+Quiz 1: 4.00 of 4
+Quiz 2: 4.00 of 4
+Quiz 3: 3.50 of 4
 Quiz 4: 4.00 of 4
-Quiz 5: 3.84 of 4
+Quiz 5: 3.52 of 4
 
-Total points: 122.67333333333333
+Total points: 145.02
+Final Grade: A+
